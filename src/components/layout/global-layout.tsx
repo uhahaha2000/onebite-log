@@ -1,6 +1,6 @@
 import { Link, Outlet } from "react-router";
 import logo from "@/assets/logo.png";
-import defaultAvatar from "@/assets/default-avatar.jpg";
+import defaultAvatar from "@/assets/default-avatar.png";
 import { SunIcon } from "lucide-react";
 
 export default function GlobalLayout() {
