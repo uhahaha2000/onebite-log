@@ -25,7 +25,7 @@ export default tseslint.config(
       ],
       /* 템플릿 코드에 추가된 부분 */
       "@typescript-eslint/no-unused-vars": "off",
-      "@typescript-eslint/no-explicit-any": "off",
+      "@typescript-eslint/no-explicity-any": "off",
     },
   }
 );

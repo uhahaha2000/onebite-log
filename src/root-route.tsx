@@ -21,7 +21,7 @@ export default function RootRoute() {
         <Route path="/profile/:userId" element={<ProfileDetailPage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
 
-        <Route path="*" element={<Navigate to="/" />} />
+        <Route path="*" element={<Navigate to={"/"} />} />
       </Route>
     </Routes>
   );
