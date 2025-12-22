@@ -3,12 +3,7 @@ import { Navigate, Outlet } from "react-router";
 
 export default function GuestOnlyLayout() {
   const session = useSession();
+  if (session) return <Navigate to={"/"} replace={true} />;
 
-  if (session) {
-    return <Navigate to="/" replace/>;
-  }
-
-  return (
-    <Outlet />
-  );
+  return <Outlet />;
 }
