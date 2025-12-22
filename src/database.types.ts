@@ -41,6 +41,30 @@ export type Database = {
         }
         Relationships: []
       }
+      profile: {
+        Row: {
+          avata_url: string | null
+          bio: string
+          created_at: string
+          id: string
+          nickname: string
+        }
+        Insert: {
+          avata_url?: string | null
+          bio?: string
+          created_at?: string
+          id?: string
+          nickname?: string
+        }
+        Update: {
+          avata_url?: string | null
+          bio?: string
+          created_at?: string
+          id?: string
+          nickname?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
