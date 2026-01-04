@@ -5,13 +5,15 @@ import { useIsSessionLoaded, useSession, useSetSession } from "@/store/session";
 import { useEffect, type ReactNode } from "react";
 
 export default function SessionProvider({ children }: { children: ReactNode }) {
-  const section = useSession();
+  const session = useSession();
   const setSession = useSetSession();
   const isSessionLoaded = useIsSessionLoaded();
 
-  const { data: profile, isLoading: isProfileLoading, isPending } = useProfileData(
-    section?.user?.id,
-  );
+  const {
+    data: profile,
+    isLoading: isProfileLoading,
+    isPending,
+  } = useProfileData(session?.user.id);
 
   useEffect(() => {
     supabase.auth.onAuthStateChange((event, session) => {
