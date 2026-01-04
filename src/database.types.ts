@@ -16,7 +16,7 @@ export type Database = {
     Tables: {
       post: {
         Row: {
-          authou_id: string
+          author_id: string
           content: string
           created_at: string
           id: number
@@ -24,7 +24,7 @@ export type Database = {
           like_count: number
         }
         Insert: {
-          authou_id?: string
+          author_id?: string
           content?: string
           created_at?: string
           id?: number
@@ -32,7 +32,7 @@ export type Database = {
           like_count?: number
         }
         Update: {
-          authou_id?: string
+          author_id?: string
           content?: string
           created_at?: string
           id?: number
