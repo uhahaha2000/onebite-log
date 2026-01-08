@@ -71,6 +71,26 @@ export default function PostEditorModal() {
     );
   };
 
+  const handleSelectImages = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const files = Array.from(e.target.files);
+      files.forEach((file) => {
+        setImages((prev) => [
+          ...prev,
+          {
+            file,
+            previewUrl: URL.createObjectURL(file),
+          },
+        ]);
+      });
+    }
+    e.target.value = ""; // 입력값 초기화
+  };
+
+  const handleDeleteImage = (image: Image) => {
+    setImages((prev) => prev.filter((prevImage) => prevImage.previewUrl !== image.previewUrl));
+  };
+
   useEffect(() => {
     if (textareaRef.current) {
       textareaRef.current.style.height = "auto";
@@ -133,6 +153,7 @@ export default function PostEditorModal() {
                       src={image.previewUrl}
                       alt={`Selected ${index + 1}`}
                       className="h-full w-full rounded-sm object-cover"
+
                     />
                     <div className="absolute top-2 right-2 cursor-pointer rounded-full bg-black/50 p-1">
                       <XIcon className="size-4 text-white" />
