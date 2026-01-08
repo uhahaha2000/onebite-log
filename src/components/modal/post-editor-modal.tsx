@@ -7,7 +7,7 @@ import {
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { useCreatePost } from "@/hooks/mutations/post/use-create-post";
 import { usePostEditorModal } from "@/store/post-editor-modal";
-import { ImageIcon } from "lucide-react";
+import { ImageIcon, XIcon } from "lucide-react";
 import { useEffect, useRef, useState, type ChangeEvent } from "react";
 import { toast } from "sonner";
 
@@ -59,6 +59,10 @@ export default function PostEditorModal() {
     e.target.value = ""; // 입력값 초기화
   };
 
+  const handleDeleteImage = (image: Image) => {
+    setImages((prev) => prev.filter((prevImage) => prevImage.previewUrl !== image.previewUrl));
+  };
+
   useEffect(() => {
     if (textareaRef.current) {
       textareaRef.current.style.height = "auto";
@@ -71,6 +75,7 @@ export default function PostEditorModal() {
     if (!isOpen) return;
     textareaRef.current?.focus();
     setContent("");
+    setImages([]);
   }, [isOpen]);
 
   return (
@@ -111,13 +116,16 @@ export default function PostEditorModal() {
             <CarouselContent>
               {images.map((image, index) => (
                 <CarouselItem key={image.previewUrl} className="basis-2/5">
-                  <div>
+                  <button type="button" className="relative" onClick={() => handleDeleteImage(image)}>
                     <img
                       src={image.previewUrl}
                       alt={`Selected ${index + 1}`}
                       className="h-full w-full rounded-sm object-cover "
                     />
-                  </div>
+                    <div className="absolute top-2 right-2 cursor-pointer rounded-full bg-black/50 p-1">
+                      <XIcon className="size-4 text-white" />
+                    </div>
+                  </button>
                 </CarouselItem>
               ))}
             </CarouselContent>
