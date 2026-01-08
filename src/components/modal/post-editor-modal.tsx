@@ -7,6 +7,7 @@ import {
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { useCreatePost } from "@/hooks/mutations/post/use-create-post";
 import { usePostEditorModal } from "@/store/post-editor-modal";
+import { useSession } from "@/store/session";
 import { ImageIcon, XIcon } from "lucide-react";
 import { useEffect, useRef, useState, type ChangeEvent } from "react";
 import { toast } from "sonner";
@@ -18,6 +19,7 @@ type Image = {
 
 export default function PostEditorModal() {
   const { isOpen, close } = usePostEditorModal();
+  const session = useSession();
   const { mutate: createPost, isPending: isCreatePostPending } = useCreatePost({
     onSuccess: () => {
       close();
@@ -40,7 +42,33 @@ export default function PostEditorModal() {
 
   const handleCreatePostClick = () => {
     if (content.trim() === "") return;
-    createPost(content);
+    createPost({
+      content,
+      images: images.map((image) => image.file),
+      userId: session!.user.id,
+    });
+  };
+
+  const handleSelectImages = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const files = Array.from(e.target.files);
+      files.forEach((file) => {
+        setImages((prev) => [
+          ...prev,
+          {
+            file,
+            previewUrl: URL.createObjectURL(file),
+          },
+        ]);
+      });
+    }
+    e.target.value = ""; // 입력값 초기화
+  };
+
+  const handleDeleteImage = (image: Image) => {
+    setImages((prev) =>
+      prev.filter((prevImage) => prevImage.previewUrl !== image.previewUrl),
+    );
   };
 
   const handleSelectImages = (e: ChangeEvent<HTMLInputElement>) => {
@@ -116,11 +144,16 @@ export default function PostEditorModal() {
             <CarouselContent>
               {images.map((image, index) => (
                 <CarouselItem key={image.previewUrl} className="basis-2/5">
-                  <button type="button" className="relative" onClick={() => handleDeleteImage(image)}>
+                  <button
+                    type="button"
+                    className="relative"
+                    onClick={() => handleDeleteImage(image)}
+                  >
                     <img
                       src={image.previewUrl}
                       alt={`Selected ${index + 1}`}
-                      className="h-full w-full rounded-sm object-cover "
+                      className="h-full w-full rounded-sm object-cover"
+
                     />
                     <div className="absolute top-2 right-2 cursor-pointer rounded-full bg-black/50 p-1">
                       <XIcon className="size-4 text-white" />
