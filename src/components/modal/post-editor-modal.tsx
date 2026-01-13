@@ -40,6 +40,26 @@ export default function PostEditorModal() {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  useEffect(() => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = "auto";
+      textareaRef.current.style.height =
+        textareaRef.current.scrollHeight + "px";
+    }
+  }, [content]);
+
+  useEffect(() => {
+    if (!isOpen) {
+      images.forEach((image) => {
+        URL.revokeObjectURL(image.previewUrl);
+      });
+      return;
+    }
+    textareaRef.current?.focus();
+    setContent("");
+    setImages([]);
+  }, [isOpen]);
+
   const handleCloseModal = () => {
     if (content !== "" || images.length !== 0) {
       openAlertModal({
@@ -55,50 +75,37 @@ export default function PostEditorModal() {
     close();
   };
 
-  const handleCreatePostClick = () => {
-    if (content.trim() === "") return;
-    createPost({
-      content,
-      images: images.map((image) => image.file),
-      userId: session!.user.id,
+const handleCreatePostClick = () => {
+  if (content.trim() === "") return;
+  createPost({
+    content,
+    images: images.map((image) => image.file),
+    userId: session!.user.id,
+  });
+};
+
+const handleSelectImages = (e: ChangeEvent<HTMLInputElement>) => {
+  if (e.target.files) {
+    const files = Array.from(e.target.files);
+
+    files.forEach((file) => {
+      setImages((prev) => [
+        ...prev,
+        { file, previewUrl: URL.createObjectURL(file) },
+      ]);
     });
-  };
+  }
 
-  const handleSelectImages = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      const files = Array.from(e.target.files);
+  e.target.value = "";
+};
 
-      files.forEach((file) => {
-        setImages((prev) => [
-          ...prev,
-          { file, previewUrl: URL.createObjectURL(file) },
-        ]);
-      });
-    }
+const handleDeleteImage = (image: Image) => {
+  setImages((prevImages) =>
+    prevImages.filter((item) => item.previewUrl !== image.previewUrl),
+  );
 
-    e.target.value = "";
-  };
-
-  const handleDeleteImage = (image: Image) => {
-    setImages((prevImages) =>
-      prevImages.filter((item) => item.previewUrl !== image.previewUrl),
-    );
-  };
-
-  useEffect(() => {
-    if (textareaRef.current) {
-      textareaRef.current.style.height = "auto";
-      textareaRef.current.style.height =
-        textareaRef.current.scrollHeight + "px";
-    }
-  }, [content]);
-
-  useEffect(() => {
-    if (!isOpen) return;
-    textareaRef.current?.focus();
-    setContent("");
-    setImages([]);
-  }, [isOpen]);
+  URL.revokeObjectURL(image.previewUrl);
+};
 
   return (
     <Dialog open={isOpen} onOpenChange={handleCloseModal}>
