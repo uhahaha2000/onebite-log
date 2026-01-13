@@ -20,6 +20,7 @@ type Image = {
 
 export default function PostEditorModal() {
   const session = useSession();
+  
   const { isOpen, close } = usePostEditorModal();
   const openAlertModal = useOpenAlertModal();
 
