@@ -10,8 +10,13 @@ import {
 import { formatTimeAgo } from "@/lib/time";
 import DeletePostButton from "@/components/post/delete-post-button";
 import EditPostButton from "@/components/post/edit-post-button";
+import { useSession } from "@/store/session";
 
 export default function PostItem(post: Post) {
+  const session = useSession();
+  const useId = session?.user.id;
+
+  const isMine = useId === post.author.id;
   return (
     <div className="flex flex-col gap-4 border-b pb-8">
       {/* 1. 유저 정보, 수정/삭제 버튼 */}
@@ -35,8 +40,12 @@ export default function PostItem(post: Post) {
 
         {/* 1-2. 수정/삭제 버튼 */}
         <div className="text-muted-foreground flex text-sm">
-          <EditPostButton {...post} />
-          <DeletePostButton id={post.id} />
+          {isMine && (
+            <>
+              <EditPostButton {...post} />
+              <DeletePostButton id={post.id} />
+            </>
+          )}
         </div>
       </div>
 
