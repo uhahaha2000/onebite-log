@@ -11,12 +11,20 @@ import { formatTimeAgo } from "@/lib/time";
 import DeletePostButton from "@/components/post/delete-post-button";
 import EditPostButton from "@/components/post/edit-post-button";
 import { useSession } from "@/store/session";
+import { usePostByIdData } from "@/hooks/queries/use-post-by-id-data";
+import Loader from "@/components/loader";
+import Fallback from "@/components/fallback";
 
-export default function PostItem(post: Post) {
+export default function PostItem({ postId }: { postId: number }) {
   const session = useSession();
   const useId = session?.user.id;
 
+  const { data: post, isPending, error } = usePostByIdData({ postId, type: "FEED" })
+  if (isPending) return <Loader />
+  if (error) return <Fallback />
+
   const isMine = useId === post.author.id;
+
   return (
     <div className="flex flex-col gap-4 border-b pb-8">
       {/* 1. 유저 정보, 수정/삭제 버튼 */}
