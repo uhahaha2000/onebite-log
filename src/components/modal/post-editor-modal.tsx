@@ -21,8 +21,8 @@ type Image = {
 
 export default function PostEditorModal() {
   const session = useSession();
-
   const postEditorModal = usePostEditorModal();
+
   const openAlertModal = useOpenAlertModal();
 
   const { mutate: createPost, isPending: isCreatePostPending } = useCreatePost({
@@ -42,11 +42,10 @@ export default function PostEditorModal() {
     },
     onError: (error) => {
       toast.error("포스트 수정에 실패했습니다", {
-        position: "top-center"
+        position: "top-center",
       });
-    }
+    },
   });
-
 
   const [content, setContent] = useState("");
   const [images, setImages] = useState<Image[]>([]);
@@ -78,10 +77,7 @@ export default function PostEditorModal() {
       setImages([]);
     }
 
-
     textareaRef.current?.focus();
-    setContent("");
-    setImages([]);
   }, [postEditorModal.isOpen]);
 
   const handleCloseModal = () => {
@@ -115,7 +111,6 @@ export default function PostEditorModal() {
         id: postEditorModal.PostId,
         content: content,
       });
-
     }
   };
 
@@ -144,8 +139,6 @@ export default function PostEditorModal() {
 
   const isPending = isCreatePostPending || isUpdatePostPending;
 
-
-
   return (
     <Dialog open={postEditorModal.isOpen} onOpenChange={handleCloseModal}>
       <DialogContent className="max-h-[90vh]">
@@ -166,7 +159,6 @@ export default function PostEditorModal() {
           multiple
           className="hidden"
         />
-
         {postEditorModal.isOpen && postEditorModal.type === "EDIT" && (
           <Carousel>
             <CarouselContent>
@@ -183,7 +175,6 @@ export default function PostEditorModal() {
             </CarouselContent>
           </Carousel>
         )}
-
 
         {images.length > 0 && (
           <Carousel>
@@ -207,8 +198,7 @@ export default function PostEditorModal() {
             </CarouselContent>
           </Carousel>
         )}
-
-        {postEditorModal.isOpen && postEditorModal.type === "CREATE" &&
+        {postEditorModal.isOpen && postEditorModal.type === "CREATE" && (
           <Button
             onClick={() => {
               fileInputRef.current?.click();
@@ -220,8 +210,7 @@ export default function PostEditorModal() {
             <ImageIcon />
             이미지 추가
           </Button>
-        }
-
+        )}
         <Button
           disabled={isPending}
           onClick={handleSavePostClick}
