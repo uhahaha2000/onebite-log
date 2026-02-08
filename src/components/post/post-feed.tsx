@@ -1,7 +1,7 @@
 import Fallback from "@/components/fallback";
 import Loader from "@/components/loader";
 import PostItem from "@/components/post/post-item";
-import { usePostsData } from "@/hooks/queries/use-posts-data";
+
 import { useInfinitePostData } from "@/hooks/queries/use-infinite-posts-data";
 import { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
