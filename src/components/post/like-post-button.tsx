@@ -4,7 +4,7 @@ import { HeartIcon } from "lucide-react";
 import { use } from "react";
 import { toast } from "sonner";
 
-export default function LikePostButton({ id, likeCount }: { id: number; likeCount: number }) {
+export default function LikePostButton({ id, likeCount, isLiked }: { id: number; likeCount: number; isLiked: boolean }) {
   
   const { mutate: togglePostLike } = useTogglePostLike({
     onError: (error) => {
@@ -20,12 +20,11 @@ export default function LikePostButton({ id, likeCount }: { id: number; likeCoun
     togglePostLike({
       postId: id,
       userId: session!.user.id
-    }
-    );
+    });
   }
   return (
-    <div className="hover:bg-muted flex cursor-pointer items-center gap-2 rounded-xl border-1 p-2 px-4 text-sm" onClick={handleLikeClick}>
-      <HeartIcon className="h-4 w-4" />
+    <div className="hover:bg-muted flex cursor-pointer items-center gap-2 rounded-xl border-1 p-2 px-4 text-sm" onClick={handleLikeClick} >
+      <HeartIcon className={`h-4 w-4 ${isLiked && "fill-foreground border-foreground"}`} />
       <span>{likeCount}</span>
     </div>
   );
