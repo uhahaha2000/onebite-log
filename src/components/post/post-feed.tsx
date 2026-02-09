@@ -6,8 +6,9 @@ import { useInfinitePostData } from "@/hooks/queries/use-infinite-posts-data";
 import { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 
-export default function PostFeed() {
-  const { data, error, isPending, fetchNextPage , isFetchingNextPage} = useInfinitePostData();
+export default function PostFeed({ authorId }: { authorId?: string }) {
+  const { data, error, isPending, fetchNextPage, isFetchingNextPage } =
+    useInfinitePostData(authorId);
   const { ref, inView } = useInView();
 
   useEffect(() => {
@@ -26,7 +27,7 @@ export default function PostFeed() {
       {data.pages.map((page) =>
         page.map((postId) => <PostItem key={postId} postId={postId} />),
       )}
-      {isFetchingNextPage && <Loader/>}
+      {isFetchingNextPage && <Loader />}
       <div ref={ref} className="h-4 bg-amber-800"></div>
     </div>
   );
