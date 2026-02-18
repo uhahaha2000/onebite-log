@@ -15,6 +15,7 @@ export async function uploadImage ({ file, filePath }: { file: File, filePath: s
 export async function deleteImageInPath(path: string) { 
   const { data:files, error:fetchFliesError } = await supabase.storage.from(BUCKET_NAME).list(path)
   
+  if (!files || files.length === 0) return;
   if (fetchFliesError) throw fetchFliesError;
 
   const { error: removeError } = await supabase.storage
