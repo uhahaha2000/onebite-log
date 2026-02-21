@@ -15,7 +15,7 @@ export default function PostDetailPage() {
     <div className="flex flex-col gap-5">
       <PostItem postId={Number(postId)} type="DETAIL" />
       <div className="text-xl font-bold">댓글</div>
-      <CommentEditor></CommentEditor>
+      <CommentEditor postId={Number(postId)}></CommentEditor>
       <CommentList></CommentList>
     </div>
   );
