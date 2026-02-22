@@ -1,10 +1,10 @@
-import { createComment } from "@/api/comment";
+import { deleteComment } from "@/api/comment";
 import type { UseMutationCallback } from "@/types";
 import { useMutation } from "@tanstack/react-query";
 
-export function useCreateComment(callbacks?: UseMutationCallback) { 
+export function useDeleteComment(callbacks?: UseMutationCallback) { 
   return useMutation({
-    mutationFn: createComment,
+    mutationFn: deleteComment,
     onSuccess: () => {
       if(callbacks?.onSuccess) {
         callbacks.onSuccess();
