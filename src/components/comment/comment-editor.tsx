@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { useCreateComment } from "@/hooks/mutations/comment/use-create-comment";
 import { toast } from "sonner";
-import { updateComment } from "@/api/comment";
 import { useUpdateComment } from "@/hooks/mutations/comment/use-update-comment";
 
 type CreateMode = {
