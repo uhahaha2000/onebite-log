@@ -5,7 +5,7 @@ export async function fetchComments(postId: number) {
     .from("comment")
     .select("*, author: profile!author_id (*)")
     .eq("post_id", postId)
-    .order("created_at", { ascending: false });
+    .order("created_at", { ascending: true });
 
   if (error) throw error;
   return data;
